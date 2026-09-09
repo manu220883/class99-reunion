@@ -1,115 +1,179 @@
-const form = document.getElementById("reunionForm");
-const submitBtn = document.getElementById("submitBtn");
-const statusEl = document.getElementById("formStatus");
+(() => {
+  const endpoint = window.REUNION_CONFIG?.APPS_SCRIPT_URL;
+  const form = document.getElementById("reunionForm");
+  const result = document.getElementById("formResult");
+  const submitBtn = document.getElementById("submitBtn");
+  const stats = {
+    total: document.getElementById("statTotal"),
+    yes: document.getElementById("statYes"),
+    maybe: document.getElementById("statMaybe"),
+    cant: document.getElementById("statCant")
+  };
 
-const REQUIRED_RADIOS = ["locationPreference","preferredWeekend","attendanceStatus","numberOfAttendees"];
-
-function getRadio(name) {
-  const el = document.querySelector(`input[name="${name}"]:checked`);
-  return el ? el.value : "";
-}
-
-function showError(field, message) {
-  const el = document.querySelector(`[data-error-for="${field}"]`);
-  if (el) el.textContent = message || "";
-}
-
-function validate() {
-  let ok = true;
-  const name = document.getElementById("name").value.trim();
-  if (!name) { showError("name", "Please enter your name."); ok = false; } else showError("name","");
-  for (const field of REQUIRED_RADIOS) {
-    if (!getRadio(field)) { showError(field, "Please select an option."); ok = false; }
-    else showError(field,"");
-  }
-  return ok;
-}
-
-function setStatus(type, message) {
-  statusEl.className = `form-status ${type}`;
-  statusEl.textContent = message;
-}
-
-function makeFingerprint(payload) {
-  return btoa(unescape(encodeURIComponent([
-    payload.name, payload.locationPreference, payload.preferredWeekend,
-    payload.attendanceStatus, payload.numberOfAttendees
-  ].join("|").toLowerCase()))).slice(0,80);
-}
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  statusEl.className = "form-status";
-  statusEl.textContent = "";
-  if (!validate()) return;
-
-  if (!CONFIG.APPS_SCRIPT_URL || CONFIG.APPS_SCRIPT_URL.includes("PASTE_YOUR")) {
-    setStatus("failure", "The reunion form is not connected yet. Please contact the organizers.");
-    return;
+  function fingerprint() {
+    const raw = [
+      navigator.userAgent,
+      navigator.language,
+      screen.width + "x" + screen.height,
+      Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+      navigator.platform || ""
+    ].join("|");
+    let h = 2166136261;
+    for (let i = 0; i < raw.length; i++) {
+      h ^= raw.charCodeAt(i);
+      h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
+    }
+    return (h >>> 0).toString(16);
   }
 
-  const fd = new FormData(form);
-  const payload = Object.fromEntries(fd.entries());
-  payload.fingerprint = makeFingerprint(payload);
-
-  const lastFingerprint = localStorage.getItem("reunionSubmissionFingerprint");
-  if (lastFingerprint === payload.fingerprint) {
-    setStatus("failure", "It looks like you already submitted this response from this browser. If you need to change your response, please contact the organizers.");
-    return;
+  function value(name) {
+    const el = form.querySelector(`[name="${name}"]:checked`);
+    return el ? el.value : (form.elements[name]?.value || "");
   }
 
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Recording response…";
+  function clearErrors() {
+    form.querySelectorAll(".field-error").forEach(e => e.textContent = "");
+  }
 
-  try {
-    // Apps Script accepts POSTed JSON. no credentials are present in this frontend.
-    const response = await fetch(CONFIG.APPS_SCRIPT_URL, {
-      method: "POST",
-      headers: {"Content-Type":"text/plain;charset=utf-8"},
-      body: JSON.stringify(payload)
+  function errorFor(name, msg) {
+    const el = form.querySelector(`[data-error="${name}"]`);
+    if (el) el.textContent = msg;
+  }
+
+  function validate() {
+    clearErrors();
+    let ok = true;
+    const name = form.elements.name.value.trim();
+    if (!name) { errorFor("name", "Please enter your name."); ok = false; }
+
+    ["locationPreference","preferredWeekend","attendanceStatus","numberOfAttendees"].forEach(n => {
+      if (!value(n)) { errorFor(n, "Please select an option."); ok = false; }
     });
-    const result = await response.json();
-    if (!result.ok) throw new Error(result.message || "Submission failed");
-    localStorage.setItem("reunionSubmissionFingerprint", payload.fingerprint);
-    setStatus("success", `🎉 Your response has been recorded! Response ID: ${result.responseId}`);
-    form.reset();
-    loadResults();
-  } catch (err) {
-    console.error(err);
-    setStatus("failure", "We couldn't record your vote. Please try again.");
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit My Response";
-  }
-});
 
-function renderBars(containerId, items) {
-  const el = document.getElementById(containerId);
-  const max = Math.max(1, ...items.map(x => Number(x.count || 0)));
-  el.innerHTML = items.map(x => `
-    <div class="bar-row">
-      <div class="bar-label"><span>${escapeHtml(x.label)}</span><strong>${x.count}</strong></div>
-      <div class="bar"><i style="width:${Math.round((x.count/max)*100)}%"></i></div>
-    </div>`).join("");
-}
-function escapeHtml(v) {
-  return String(v ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-function loadResults() {
-  if (!CONFIG.ENABLE_PUBLIC_RESULTS || !CONFIG.APPS_SCRIPT_URL || CONFIG.APPS_SCRIPT_URL.includes("PASTE_YOUR")) return;
-  fetch(CONFIG.APPS_SCRIPT_URL + "?action=summary")
-    .then(r => r.json())
-    .then(data => {
+    if (!ok) {
+      const first = form.querySelector(".field-error:not(:empty)");
+      first?.scrollIntoView({behavior:"smooth", block:"center"});
+    }
+    return ok;
+  }
+
+  function showResult(type, html) {
+    result.className = `form-result ${type}`;
+    result.innerHTML = html;
+    result.hidden = false;
+    result.scrollIntoView({behavior:"smooth", block:"nearest"});
+  }
+
+  async function submit() {
+    if (!endpoint) {
+      showResult("error", "We couldn't record your vote. Please try again.");
+      return;
+    }
+    if (!validate()) return;
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add("loading");
+    submitBtn.innerHTML = '<span class="spinner"></span> Recording your response…';
+    result.hidden = true;
+
+    const data = {
+      name: form.elements.name.value.trim(),
+      nickname: form.elements.nickname.value.trim(),
+      phone: form.elements.phone.value.trim(),
+      email: form.elements.email.value.trim(),
+      currentCity: form.elements.currentCity.value.trim(),
+      locationPreference: value("locationPreference"),
+      preferredWeekend: value("preferredWeekend"),
+      attendanceStatus: value("attendanceStatus"),
+      numberOfAttendees: value("numberOfAttendees"),
+      additionalComments: form.elements.additionalComments.value.trim(),
+      consentToDisplayName: form.elements.consentToDisplayName.checked ? "Yes" : "No",
+      fingerprint: fingerprint()
+    };
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {"Content-Type": "text/plain;charset=utf-8"},
+        body: JSON.stringify(data),
+        redirect: "follow"
+      });
+      const text = await response.text();
+      let payload;
+      try { payload = JSON.parse(text); } catch (_) { payload = null; }
+
+      if (!response.ok || !payload || !payload.ok) {
+        const duplicate = payload?.message === "Duplicate submission detected.";
+        showResult("error", duplicate
+          ? "It looks like this response was already recorded. ❤️"
+          : "We couldn't record your vote. Please try again.");
+        return;
+      }
+
+      showResult("success",
+        `<strong>You're on the list! ❤️</strong><br>
+         Your response has been recorded successfully.
+         <span class="response-id">Response ID: ${payload.responseId || "recorded"}</span>`);
+      form.reset();
+      loadSummary();
+    } catch (e) {
+      showResult("error", "We couldn't record your vote. Please try again.");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("loading");
+      submitBtn.innerHTML = "Submit my response <span>→</span>";
+    }
+  }
+
+  form?.addEventListener("submit", e => {
+    e.preventDefault();
+    submit();
+  });
+
+  async function loadSummary() {
+    if (!endpoint) return;
+    try {
+      const response = await fetch(`${endpoint}?action=summary`, {redirect:"follow"});
+      const data = await response.json();
       if (!data.ok) return;
-      const s = data.summary;
-      document.getElementById("resultsGrid").innerHTML = `
-        <div class="result-card"><strong>${s.totalResponses}</strong><span>Total responses</span></div>
-        <div class="result-card"><strong>${s.attendance.yes}</strong><span>Yes attending</span></div>
-        <div class="result-card"><strong>${s.attendance.maybe}</strong><span>Maybe</span></div>
-        <div class="result-card"><strong>${s.attendance.cantAttend}</strong><span>Can't attend</span></div>`;
-      renderBars("locationChart", s.location);
-      renderBars("dateChart", s.dates);
-      renderBars("attendanceChart", s.attendanceBars);
-    }).catch(console.error);
-}
-loadResults();
+
+      stats.total.textContent = data.summary.totalResponses ?? 0;
+      stats.yes.textContent = data.summary.attendance?.yes ?? 0;
+      stats.maybe.textContent = data.summary.attendance?.maybe ?? 0;
+      stats.cant.textContent = data.summary.attendance?.cantAttend ?? 0;
+
+      renderBars("locationBars", data.summary.location || []);
+      renderBars("dateBars", data.summary.dates || []);
+      renderBars("attendanceBars", data.summary.attendanceBars || []);
+    } catch (_) {
+      // Results are supplemental; keep the form usable if the summary endpoint is unavailable.
+    }
+  }
+
+  function renderBars(id, items) {
+    const root = document.getElementById(id);
+    if (!root) return;
+    const max = Math.max(1, ...items.map(x => Number(x.count || 0)));
+    root.innerHTML = items.map(item => {
+      const pct = Math.round((Number(item.count || 0) / max) * 100);
+      return `<div class="bar-row">
+        <div class="bar-label"><span>${escapeHtml(item.label)}</span><strong>${item.count || 0}</strong></div>
+        <div class="bar-track"><span style="width:${pct}%"></span></div>
+      </div>`;
+    }).join("");
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[c]));
+  }
+
+  document.querySelectorAll("[data-scroll]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelector(btn.dataset.scroll)?.scrollIntoView({behavior:"smooth"});
+    });
+  });
+
+  loadSummary();
+})();

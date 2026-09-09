@@ -1,167 +1,203 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Class of '99 | Eswaramma High School Reunion</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17352d">
   <meta name="description" content="Eswaramma High School Bhadravathi — Class of '99 Reunion 2026">
+  <title>Class of '99 — Eswaramma High School Reunion</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <span class="eyebrow">ESWARAMMA HIGH SCHOOL · BHADRAVATHI</span>
-      <h1>Class of <span>'99</span></h1>
-      <p class="hero-subtitle">One class. One unforgettable reunion.</p>
-      <p class="hero-copy">Let's meet again, share old stories, laugh at the memories, and create a few new ones.</p>
-      <a class="primary-btn" href="#poll">Take the Reunion Poll</a>
-    </div>
-  </header>
 
-  <main>
-    <section class="intro section">
-      <div>
-        <span class="section-kicker">1999 → 2026</span>
-        <h2>After 27 years, let's come together.</h2>
+<header class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <div class="eyebrow">ESWARAMMA HIGH SCHOOL · BHADRAVATHI</div>
+    <h1>Class of <em>'99</em></h1>
+    <p class="hero-lead">One class. One unforgettable reunion.</p>
+    <p class="hero-copy">Let's meet again, share old stories, laugh at the memories, and create a few new ones.</p>
+    <button class="primary-btn" data-scroll="#poll">Take the Reunion Poll <span>→</span></button>
+  </div>
+  <div class="hero-bottom">1999 <span>→</span> 2026</div>
+</header>
+
+<main>
+  <section class="story section">
+    <div class="section-grid">
+      <div class="section-intro">
+        <div class="eyebrow orange">AFTER 27 YEARS</div>
+        <h2>Some friendships<br><em>never graduate.</em></h2>
+        <p>
+          We had once shared classrooms, lunch breaks, stage programs, mischief,
+          dreams and countless ordinary days that became extraordinary memories.
+        </p>
+        <p>
+          The earlier Teachers’ Felicitation plan has been dropped. But the opportunity
+          to come together, meet our teachers and reconnect with our friends shouldn't be.
+        </p>
       </div>
-      <p>We are planning a Class of '99 reunion and need your input to choose the best location and weekend. It takes less than two minutes to respond.</p>
-    </section>
+      <div class="quote-card">
+        <div class="quote-mark">“</div>
+        <p>It's not about organising anything elaborate. It's simply about getting everyone together.</p>
+        <span>— Class of '99</span>
+      </div>
+    </div>
+  </section>
 
-    <section class="poll section" id="poll">
-      <div class="section-heading">
-        <span class="section-kicker">REUNION POLL</span>
-        <h2>Tell us what works for you</h2>
-        <p>Your response is sent securely to the organizers' Google Sheet.</p>
+  <section class="memories section">
+    <div class="wide">
+      <div class="section-head centered">
+        <div class="eyebrow orange">FROM OUR ALBUM</div>
+        <h2>A few memories<br><em>from back then.</em></h2>
+      </div>
+      <div class="memory-grid">
+        <figure class="memory large"><img src="memory-01.jpg" alt="Classmates gathered under a tree"></figure>
+        <figure class="memory"><img src="memory-02.jpg" alt="School stage memory"></figure>
+        <figure class="memory"><img src="memory-03.jpg" alt="Old school gathering"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="poll section" id="poll">
+    <div class="wide">
+      <div class="section-head">
+        <div class="eyebrow gold">THE REUNION POLL</div>
+        <h2>Tell us what works<br><em>for you.</em></h2>
+        <p>Your response goes securely to the organisers' Google Sheet. Only aggregate results are shown publicly.</p>
       </div>
 
       <form id="reunionForm" novalidate>
-        <div class="question-card">
-          <label class="required">Name</label>
-          <input id="name" name="name" required maxlength="100" placeholder="Your full name">
-          <small class="error" data-error-for="name"></small>
-        </div>
-
-        <div class="question-card">
-          <label>Nickname / name we knew you by in school</label>
-          <input id="nickname" name="nickname" maxlength="100" placeholder="e.g. Manu">
-        </div>
-
-        <div class="question-card">
-          <label class="required">What is your preferred reunion location?</label>
-          <div class="options">
-            <label><input type="radio" name="locationPreference" value="Bangalore" required> <span>Bangalore</span></label>
-            <label><input type="radio" name="locationPreference" value="Bhadravathi"> <span>Bhadravathi</span></label>
-            <label><input type="radio" name="locationPreference" value="Either is fine"> <span>Either is fine</span></label>
+        <div class="form-grid">
+          <div class="field full">
+            <label for="name">Your name <span>*</span></label>
+            <input id="name" name="name" maxlength="100" autocomplete="name" placeholder="The name we should call you" required>
+            <small class="field-error" data-error="name"></small>
           </div>
-          <small class="error" data-error-for="locationPreference"></small>
-        </div>
 
-        <div class="question-card">
-          <label class="required">Which weekend works best for you?</label>
-          <div class="options">
-            <label><input type="radio" name="preferredWeekend" value="November 14–15, 2026" required> <span>November 14–15, 2026</span></label>
-            <label><input type="radio" name="preferredWeekend" value="November 21–22, 2026"> <span>November 21–22, 2026</span></label>
-            <label><input type="radio" name="preferredWeekend" value="November 28–29, 2026"> <span>November 28–29, 2026</span></label>
-            <label><input type="radio" name="preferredWeekend" value="December 5–6, 2026"> <span>December 5–6, 2026</span></label>
-            <label><input type="radio" name="preferredWeekend" value="December 12–13, 2026"> <span>December 12–13, 2026</span></label>
-            <label><input type="radio" name="preferredWeekend" value="Flexible / Any weekend"> <span>Flexible / Any weekend</span></label>
+          <div class="field">
+            <label for="nickname">Nickname / school name</label>
+            <input id="nickname" name="nickname" placeholder="What we knew you by">
           </div>
-          <small class="error" data-error-for="preferredWeekend"></small>
-        </div>
 
-        <div class="question-card">
-          <label class="required">Are you planning to attend?</label>
-          <div class="options">
-            <label><input type="radio" name="attendanceStatus" value="Yes" required> <span>Yes</span></label>
-            <label><input type="radio" name="attendanceStatus" value="Maybe"> <span>Maybe</span></label>
-            <label><input type="radio" name="attendanceStatus" value="Unfortunately, I can't attend"> <span>Unfortunately, I can't attend</span></label>
+          <div class="field">
+            <label for="currentCity">Current city</label>
+            <input id="currentCity" name="currentCity" placeholder="Where are you now?">
           </div>
-          <small class="error" data-error-for="attendanceStatus"></small>
-        </div>
 
-        <div class="question-card">
-          <label class="required">How many people are likely to attend?</label>
-          <div class="options">
-            <label><input type="radio" name="numberOfAttendees" value="Just me" required> <span>Just me</span></label>
-            <label><input type="radio" name="numberOfAttendees" value="Me + 1"> <span>Me + 1</span></label>
-            <label><input type="radio" name="numberOfAttendees" value="Me + family"> <span>Me + family</span></label>
-            <label><input type="radio" name="numberOfAttendees" value="Not sure yet"> <span>Not sure yet</span></label>
+          <div class="field">
+            <label for="phone">WhatsApp / phone</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Optional">
           </div>
-          <small class="error" data-error-for="numberOfAttendees"></small>
-        </div>
 
-        <div class="grid-2">
-          <div class="question-card">
-            <label>Current City</label>
-            <input name="currentCity" maxlength="100" placeholder="Where are you now?">
-          </div>
-          <div class="question-card">
-            <label>WhatsApp / Phone</label>
-            <input name="phone" maxlength="30" inputmode="tel" placeholder="Optional">
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="Optional">
           </div>
         </div>
 
-        <div class="grid-2">
-          <div class="question-card">
-            <label>Email</label>
-            <input name="email" maxlength="150" type="email" placeholder="Optional">
+        <fieldset class="question">
+          <legend>01 · Where should we meet? <span>*</span></legend>
+          <div class="choice-grid three">
+            <label class="choice"><input type="radio" name="locationPreference" value="Bangalore"><span>Bangalore</span></label>
+            <label class="choice"><input type="radio" name="locationPreference" value="Bhadravathi"><span>Bhadravathi</span></label>
+            <label class="choice"><input type="radio" name="locationPreference" value="Either is fine"><span>Either is fine</span></label>
           </div>
-          <div class="question-card">
-            <label>Consent to display your name</label>
-            <select name="consentToDisplayName">
-              <option value="No">No</option>
-              <option value="Yes">Yes</option>
-            </select>
+          <small class="field-error" data-error="locationPreference"></small>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>02 · Which weekend works best? <span>*</span></legend>
+          <div class="choice-grid two">
+            <label class="choice"><input type="radio" name="preferredWeekend" value="November 14–15, 2026"><span>Nov 14–15, 2026</span></label>
+            <label class="choice"><input type="radio" name="preferredWeekend" value="November 21–22, 2026"><span>Nov 21–22, 2026</span></label>
+            <label class="choice"><input type="radio" name="preferredWeekend" value="November 28–29, 2026"><span>Nov 28–29, 2026</span></label>
+            <label class="choice"><input type="radio" name="preferredWeekend" value="December 5–6, 2026"><span>Dec 5–6, 2026</span></label>
+            <label class="choice"><input type="radio" name="preferredWeekend" value="December 12–13, 2026"><span>Dec 12–13, 2026</span></label>
+            <label class="choice"><input type="radio" name="preferredWeekend" value="Flexible / Any weekend"><span>Flexible / Any weekend</span></label>
           </div>
+          <small class="field-error" data-error="preferredWeekend"></small>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>03 · Are you planning to attend? <span>*</span></legend>
+          <div class="choice-grid three">
+            <label class="choice"><input type="radio" name="attendanceStatus" value="Yes"><span>Yes ❤️</span></label>
+            <label class="choice"><input type="radio" name="attendanceStatus" value="Maybe"><span>Maybe</span></label>
+            <label class="choice"><input type="radio" name="attendanceStatus" value="Unfortunately, I can't attend"><span>Can't attend</span></label>
+          </div>
+          <small class="field-error" data-error="attendanceStatus"></small>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>04 · How many people are likely to attend? <span>*</span></legend>
+          <div class="choice-grid four">
+            <label class="choice"><input type="radio" name="numberOfAttendees" value="Just me"><span>Just me</span></label>
+            <label class="choice"><input type="radio" name="numberOfAttendees" value="Me + 1"><span>Me + 1</span></label>
+            <label class="choice"><input type="radio" name="numberOfAttendees" value="Me + family"><span>Me + family</span></label>
+            <label class="choice"><input type="radio" name="numberOfAttendees" value="Not sure yet"><span>Not sure yet</span></label>
+          </div>
+          <small class="field-error" data-error="numberOfAttendees"></small>
+        </fieldset>
+
+        <div class="field">
+          <label for="additionalComments">Message / memory</label>
+          <textarea id="additionalComments" name="additionalComments" maxlength="1000" placeholder="Share a memory, message or something you'd love to see at the reunion…"></textarea>
         </div>
 
-        <div class="question-card">
-          <label>Message / memory</label>
-          <textarea name="additionalComments" maxlength="1000" rows="4" placeholder="Share a memory, message or note for the class..."></textarea>
-        </div>
+        <label class="consent">
+          <input type="checkbox" name="consentToDisplayName">
+          <span>I'm happy for my name to be displayed with a shared memory/message on the reunion website.</span>
+        </label>
 
-        <input type="hidden" name="source" value="Website">
-        <button id="submitBtn" class="primary-btn submit-btn" type="submit">Submit My Response</button>
-        <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
+        <div class="submit-row">
+          <button class="primary-btn light" id="submitBtn" type="submit">Submit my response <span>→</span></button>
+          <span class="privacy-note">🔒 Phone, email and individual responses stay private.</span>
+        </div>
+        <div id="formResult" class="form-result" hidden></div>
       </form>
-    </section>
+    </div>
+  </section>
 
-    <section class="results section">
-      <div class="section-heading">
-        <span class="section-kicker">LIVE AGGREGATE RESULTS</span>
-        <h2>Where is the class leaning?</h2>
-        <p>Only totals are shown here. Individual responses remain private.</p>
+  <section class="results section">
+    <div class="wide">
+      <div class="section-head centered">
+        <div class="eyebrow orange">LIVE REUNION PULSE</div>
+        <h2>Where the class<br><em>stands today.</em></h2>
+        <p>Only anonymous aggregate counts are displayed here.</p>
       </div>
-      <div id="resultsGrid" class="results-grid">
-        <div class="result-card"><strong>—</strong><span>Total responses</span></div>
-        <div class="result-card"><strong>—</strong><span>Yes attending</span></div>
-        <div class="result-card"><strong>—</strong><span>Maybe</span></div>
-        <div class="result-card"><strong>—</strong><span>Can't attend</span></div>
+
+      <div class="stats">
+        <div class="stat"><strong id="statTotal">—</strong><span>Total responses</span></div>
+        <div class="stat"><strong id="statYes">—</strong><span>Planning to attend</span></div>
+        <div class="stat"><strong id="statMaybe">—</strong><span>Maybe</span></div>
+        <div class="stat"><strong id="statCant">—</strong><span>Can't attend</span></div>
       </div>
+
       <div class="charts">
-        <div class="chart-card"><h3>Location preference</h3><div id="locationChart"></div></div>
-        <div class="chart-card"><h3>Date preference</h3><div id="dateChart"></div></div>
-        <div class="chart-card"><h3>Attendance status</h3><div id="attendanceChart"></div></div>
+        <div class="chart-card"><h3>Location preference</h3><div id="locationBars"></div></div>
+        <div class="chart-card"><h3>Weekend preference</h3><div id="dateBars"></div></div>
+        <div class="chart-card"><h3>Attendance</h3><div id="attendanceBars"></div></div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="memory section">
-      <div>
-        <span class="section-kicker">THEN & NOW</span>
-        <h2>Bring your memories.</h2>
-        <p>Use the message box above to share a school memory, a funny incident, or a message for your classmates.</p>
-      </div>
-      <a class="secondary-btn" href="#poll">Share a Memory</a>
-    </section>
-  </main>
+  <section class="closing section">
+    <div class="closing-inner">
+      <div class="eyebrow gold">ONE MORE TIME</div>
+      <h2>Let's make the<br><em>memory together.</em></h2>
+      <p>Your participation matters more than the location. Let's find what works for the maximum number of friends — and most importantly, get everyone together. ❤️</p>
+      <button class="primary-btn" data-scroll="#poll">Take the Reunion Poll <span>→</span></button>
+    </div>
+  </section>
+</main>
 
-  <footer>
-    <strong>Eswaramma High School · Class of '99</strong>
-    <span>Bhadravathi · Reunion 2026</span>
-  </footer>
+<footer>
+  <strong>ESWARAMMA HIGH SCHOOL · CLASS OF '99</strong>
+  <span> · Reunion 2026</span>
+</footer>
 
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
