@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class of '99 | Eswaramma High School Reunion</title>
+  <meta name="description" content="Eswaramma High School Bhadravathi — Class of '99 Reunion 2026">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="eyebrow">ESWARAMMA HIGH SCHOOL · BHADRAVATHI</span>
+      <h1>Class of <span>'99</span></h1>
+      <p class="hero-subtitle">One class. One unforgettable reunion.</p>
+      <p class="hero-copy">Let's meet again, share old stories, laugh at the memories, and create a few new ones.</p>
+      <a class="primary-btn" href="#poll">Take the Reunion Poll</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro section">
+      <div>
+        <span class="section-kicker">1999 → 2026</span>
+        <h2>After 27 years, let's come together.</h2>
+      </div>
+      <p>We are planning a Class of '99 reunion and need your input to choose the best location and weekend. It takes less than two minutes to respond.</p>
+    </section>
+
+    <section class="poll section" id="poll">
+      <div class="section-heading">
+        <span class="section-kicker">REUNION POLL</span>
+        <h2>Tell us what works for you</h2>
+        <p>Your response is sent securely to the organizers' Google Sheet.</p>
+      </div>
+
+      <form id="reunionForm" novalidate>
+        <div class="question-card">
+          <label class="required">Name</label>
+          <input id="name" name="name" required maxlength="100" placeholder="Your full name">
+          <small class="error" data-error-for="name"></small>
+        </div>
+
+        <div class="question-card">
+          <label>Nickname / name we knew you by in school</label>
+          <input id="nickname" name="nickname" maxlength="100" placeholder="e.g. Manu">
+        </div>
+
+        <div class="question-card">
+          <label class="required">What is your preferred reunion location?</label>
+          <div class="options">
+            <label><input type="radio" name="locationPreference" value="Bangalore" required> <span>Bangalore</span></label>
+            <label><input type="radio" name="locationPreference" value="Bhadravathi"> <span>Bhadravathi</span></label>
+            <label><input type="radio" name="locationPreference" value="Either is fine"> <span>Either is fine</span></label>
+          </div>
+          <small class="error" data-error-for="locationPreference"></small>
+        </div>
+
+        <div class="question-card">
+          <label class="required">Which weekend works best for you?</label>
+          <div class="options">
+            <label><input type="radio" name="preferredWeekend" value="November 14–15, 2026" required> <span>November 14–15, 2026</span></label>
+            <label><input type="radio" name="preferredWeekend" value="November 21–22, 2026"> <span>November 21–22, 2026</span></label>
+            <label><input type="radio" name="preferredWeekend" value="November 28–29, 2026"> <span>November 28–29, 2026</span></label>
+            <label><input type="radio" name="preferredWeekend" value="December 5–6, 2026"> <span>December 5–6, 2026</span></label>
+            <label><input type="radio" name="preferredWeekend" value="December 12–13, 2026"> <span>December 12–13, 2026</span></label>
+            <label><input type="radio" name="preferredWeekend" value="Flexible / Any weekend"> <span>Flexible / Any weekend</span></label>
+          </div>
+          <small class="error" data-error-for="preferredWeekend"></small>
+        </div>
+
+        <div class="question-card">
+          <label class="required">Are you planning to attend?</label>
+          <div class="options">
+            <label><input type="radio" name="attendanceStatus" value="Yes" required> <span>Yes</span></label>
+            <label><input type="radio" name="attendanceStatus" value="Maybe"> <span>Maybe</span></label>
+            <label><input type="radio" name="attendanceStatus" value="Unfortunately, I can't attend"> <span>Unfortunately, I can't attend</span></label>
+          </div>
+          <small class="error" data-error-for="attendanceStatus"></small>
+        </div>
+
+        <div class="question-card">
+          <label class="required">How many people are likely to attend?</label>
+          <div class="options">
+            <label><input type="radio" name="numberOfAttendees" value="Just me" required> <span>Just me</span></label>
+            <label><input type="radio" name="numberOfAttendees" value="Me + 1"> <span>Me + 1</span></label>
+            <label><input type="radio" name="numberOfAttendees" value="Me + family"> <span>Me + family</span></label>
+            <label><input type="radio" name="numberOfAttendees" value="Not sure yet"> <span>Not sure yet</span></label>
+          </div>
+          <small class="error" data-error-for="numberOfAttendees"></small>
+        </div>
+
+        <div class="grid-2">
+          <div class="question-card">
+            <label>Current City</label>
+            <input name="currentCity" maxlength="100" placeholder="Where are you now?">
+          </div>
+          <div class="question-card">
+            <label>WhatsApp / Phone</label>
+            <input name="phone" maxlength="30" inputmode="tel" placeholder="Optional">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="question-card">
+            <label>Email</label>
+            <input name="email" maxlength="150" type="email" placeholder="Optional">
+          </div>
+          <div class="question-card">
+            <label>Consent to display your name</label>
+            <select name="consentToDisplayName">
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="question-card">
+          <label>Message / memory</label>
+          <textarea name="additionalComments" maxlength="1000" rows="4" placeholder="Share a memory, message or note for the class..."></textarea>
+        </div>
+
+        <input type="hidden" name="source" value="Website">
+        <button id="submitBtn" class="primary-btn submit-btn" type="submit">Submit My Response</button>
+        <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section class="results section">
+      <div class="section-heading">
+        <span class="section-kicker">LIVE AGGREGATE RESULTS</span>
+        <h2>Where is the class leaning?</h2>
+        <p>Only totals are shown here. Individual responses remain private.</p>
+      </div>
+      <div id="resultsGrid" class="results-grid">
+        <div class="result-card"><strong>—</strong><span>Total responses</span></div>
+        <div class="result-card"><strong>—</strong><span>Yes attending</span></div>
+        <div class="result-card"><strong>—</strong><span>Maybe</span></div>
+        <div class="result-card"><strong>—</strong><span>Can't attend</span></div>
+      </div>
+      <div class="charts">
+        <div class="chart-card"><h3>Location preference</h3><div id="locationChart"></div></div>
+        <div class="chart-card"><h3>Date preference</h3><div id="dateChart"></div></div>
+        <div class="chart-card"><h3>Attendance status</h3><div id="attendanceChart"></div></div>
+      </div>
+    </section>
+
+    <section class="memory section">
+      <div>
+        <span class="section-kicker">THEN & NOW</span>
+        <h2>Bring your memories.</h2>
+        <p>Use the message box above to share a school memory, a funny incident, or a message for your classmates.</p>
+      </div>
+      <a class="secondary-btn" href="#poll">Share a Memory</a>
+    </section>
+  </main>
+
+  <footer>
+    <strong>Eswaramma High School · Class of '99</strong>
+    <span>Bhadravathi · Reunion 2026</span>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
